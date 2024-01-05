@@ -83,7 +83,7 @@ const getMe = asyncHandler(async function (req, res) {
     jwt.verify(token, process.env.JWT_SECRET);
     res.json(true);
   } catch (error) {
-    res.json(false);
+    res.json(error.message);
   }
 
   // console.log("USER ID " + req.user);
