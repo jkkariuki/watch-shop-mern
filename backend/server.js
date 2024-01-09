@@ -26,7 +26,7 @@ app.use("/api/products", productRouter);
 
 app.post("/api/checkout", async (req, res) => {
   console.log(req.body);
-  const items = req.body.items;
+  const items = req.body;
   let lineItems = [];
 
   items.map((item) => {
@@ -34,8 +34,8 @@ app.post("/api/checkout", async (req, res) => {
       price_data: {
         currency: "usd",
         product_data: {
-          name: item.title,
-          // images:[item.thumbnail],
+          name: item.name,
+          images: [item.image],
         },
         unit_amount: item.price * 100,
       },
