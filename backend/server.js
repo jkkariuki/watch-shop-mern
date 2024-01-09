@@ -7,6 +7,7 @@ const cors = require("cors");
 require("dotenv").config();
 const productRouter = require("./routes/products");
 const userRouter = require("./routes/users");
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 //express setup
 const app = express();
@@ -22,6 +23,39 @@ app.use(
 app.use(express.static("public"));
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
+
+app.post("/api/checkout", async (req, res) => {
+  console.log(req.body);
+  const items = req.body.items;
+  let lineItems = [];
+
+  items.map((item) => {
+    lineItems.push({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item.title,
+          // images:[item.thumbnail],
+        },
+        unit_amount: item.price * 100,
+      },
+      quantity: item.qty,
+    });
+  });
+
+  const session = await stripe.checkout.sessions.create({
+    line_items: lineItems,
+    mode: "payment",
+    success_url: "http://localhost:3000/collection",
+    cancel_url: "http://localhost:3000/login",
+  });
+
+  res.send(
+    JSON.stringify({
+      url: session.url,
+    })
+  );
+});
 
 //dbModels
 const Product = require("./models/productModel");
