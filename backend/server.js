@@ -24,7 +24,7 @@ app.use(express.static("public"));
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
 
-app.post("/api/checkout", async (req, res) => {
+app.post("/api/checkout", cors(), async (req, res) => {
   console.log(req.body);
   const items = req.body;
   let lineItems = [];
