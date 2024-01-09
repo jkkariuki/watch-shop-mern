@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: true,
+    origin: "*",
     credentials: true,
   })
 );
@@ -46,8 +46,8 @@ app.post("/api/checkout", async (req, res) => {
   const session = await stripe.checkout.sessions.create({
     line_items: lineItems,
     mode: "payment",
-    success_url: "http://localhost:3000/collection",
-    cancel_url: "http://localhost:3000/login",
+    success_url: "https://watch-shop-react2.onrender.com/collection",
+    cancel_url: "https://watch-shop-react2.onrender.com/login",
   });
 
   res.send(
