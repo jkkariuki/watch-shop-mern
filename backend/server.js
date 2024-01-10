@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: true,
+    origin: "https://watch-shop-react2.onrender.com",
     credentials: true,
   })
 );
@@ -24,7 +24,7 @@ app.use(express.static("public"));
 app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
 
-app.post("/api/checkout", cors(), async (req, res) => {
+app.post("/api/checkout", async (req, res) => {
   console.log(req.body);
   const items = req.body;
   let lineItems = [];
@@ -49,6 +49,7 @@ app.post("/api/checkout", cors(), async (req, res) => {
     success_url: "https://watch-shop-react2.onrender.com/collection",
     cancel_url: "https://watch-shop-react2.onrender.com/login",
   });
+  console.log(session);
 
   res.send(
     JSON.stringify({
